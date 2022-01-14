@@ -12,14 +12,19 @@ export async function main(denops: Denops): Promise<void> {
 
     denops.dispatcher = {
         async init(): Promise<void> {
-            const line = await denops.call("getline", 1);
-            if (line == "### A Pluto.jl notebook ###") {
-                await maze();
-            };
+            await maze();
         },
     };
+
+    await denops.cmd(
+        `command! Pluto call denops#request('${denops.name}', 'init', [])`
+    );
 
     await denops.cmd(
         `autocmd FileType julia call denops#request('${denops.name}', 'init', [])`
     );
 };
+
+function isNotebookHeader(line: string): boolean {
+    return line == "### A Pluto.jl notebook ###"
+}

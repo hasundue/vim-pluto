@@ -50,11 +50,11 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 ```
 
-Edit a notebook file (.jl) in Vim while opening the notebook in Pluto web UI.
+Edit a notebook (.jl file) in Vim while opening the notebook in Pluto web UI.
 
 ## Functions
 ### Insertion of a cell
 - pluto#insert_cell_above()
 - pluto#insert_cell_below()
 
-Insert an empty cell above/below the cursor and start editing it.
+Insert an empty cell above/below the cell under the cursor and start editing it.

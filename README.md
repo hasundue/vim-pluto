@@ -7,7 +7,7 @@ Currently, a couple of different versions of the plugin are being developed.
 
 ## Requirements
 - Vim 8 / NeoVim 0.5 or newer
-- [Deno](https://deno.land/)
+- [Deno](https://deno.land)
 - [denops.vim](https://github.com/vim-denops/denops.vim)
 
 ## Installation
@@ -28,6 +28,7 @@ Example:
 ```viml
 nnoremap <silent> <LocalLeader>O :call pluto#insert_cell_above()<CR>
 nnoremap <silent> <LocalLeader>o :call pluto#insert_cell_below()<CR>
+nnoremap <silent> <LocalLeader>t :call pluto#toggle_code()<CR>
 ```
 
 ## Recommended Usage
@@ -58,3 +59,12 @@ Edit a notebook (.jl file) in Vim while opening the notebook in Pluto web UI.
 - pluto#insert_cell_below()
 
 Insert an empty cell above/below the cell under the cursor and start editing it.
+
+### Show/hide code
+- pluto#show_code()
+- pluto#hide_code()
+- pluto#toggle_code()
+
+Change visibility of code in the cell under the cursor.
+
+Changes are not reflected in Web UI until a reload of the notebook because Pluto lacks of the implementation, unfortunately.

@@ -1,9 +1,11 @@
 import { Denops } from "https://deno.land/x/denops_std@v2.4.0/mod.ts";
+import { v4 } from "https://deno.land/std@0.122.0/uuid/mod.ts";
 
 import {
     getCursorLnum,
     getLastLnum,
     getLine,
+    setLine,
     searchPrev,
     searchNext,
     appendLines,
@@ -16,7 +18,8 @@ import {
     CELL_HEAD,
     ORDER_TITLE,
     ORDER_HEAD,
-    VISIBLE_HEAD,
+    SHOWN_HEAD,
+    HIDDEN_HEAD,
 } from "./const.ts";
 
 export async function insertCell(denops: Denops, direction: number): Promise<void> {
@@ -42,21 +45,54 @@ export async function insertCell(denops: Denops, direction: number): Promise<voi
         newOrderLnum = direction < 0 ? orderTitleLnum : lastLnum;
         newLnum = direction < 0 ? cursorLnum - 1 : orderTitleLnum - 1;
     }
-    else if ( headerLnum == orderTitleLnum ) { // Top or Bottom of the notebook
-        newOrderLnum = lastLnum;
-        newLnum = orderTitleLnum - 1;
-    }
     else {
         const header: string = await getLine(denops, headerLnum);
-        const id: string = header.substring(CELL_HEAD.length);
-        const orderLnum: number = await searchNext(denops, ORDER_HEAD + id);
-        const offset = direction < 0 ? 0 : -1;
-        newOrderLnum = orderLnum + offset;
-        newLnum = headerLnum - 1;
+        const maybeId: string = header.substring(CELL_HEAD.length);
+
+        if ( !v4.validate(maybeId) ) { // Metadata of the notebook
+            newOrderLnum = lastLnum;
+            newLnum = orderTitleLnum - 1;
+        }
+        else {
+            const orderLnum: number = await searchNext(denops, ORDER_HEAD + maybeId);
+            const offset = direction < 0 ? 0 : -1;
+            newOrderLnum = orderLnum + offset;
+            newLnum = headerLnum - 1;
+        }
     }
 
-    await appendLine(denops, newOrderLnum, VISIBLE_HEAD + newCellID);
+    await appendLine(denops, newOrderLnum, SHOWN_HEAD + newCellID);
     await appendLines(denops, newLnum, [ CELL_HEAD + newCellID, "", "" ])
     await moveCursor(denops, newLnum + 2, 1);
     await startInsert(denops);
+}
+
+export async function setCodeVisibility(denops: Denops, mode: number): Promise<void> {
+    const headerLnum: number = await searchPrev(denops, CELL_HEAD);
+
+    const maybeCellHeader: string = await getLine(denops, headerLnum);
+    const maybeId: string = maybeCellHeader.substring(CELL_HEAD.length);
+
+    if ( !v4.validate(maybeId) ) {
+        return;
+    }
+
+    const orderLnum: number = await searchNext(denops, ORDER_HEAD + maybeId);
+    const orderLine: string = await getLine(denops, orderLnum);
+    const head: string = orderLine.substring(0, ORDER_HEAD.length);
+
+    var newHead: string;
+
+    if ( mode > 0 ) { // Show the cell
+        newHead = SHOWN_HEAD;
+    }
+    else if ( mode < 0 ) { // Hide the cell
+        newHead = HIDDEN_HEAD;
+    }
+    else { // Toggle (mode = 0)
+        newHead = head == SHOWN_HEAD ? HIDDEN_HEAD : SHOWN_HEAD;
+    }
+
+    const newOrderLine: string = newHead + orderLine.substring(ORDER_HEAD.length);
+    await setLine(denops, orderLnum, newOrderLine);
 }

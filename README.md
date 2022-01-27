@@ -6,9 +6,9 @@ Currently, a couple of different versions of the plugin are being developed.
 - A plugin which turns your Vim into a front-end of Pluto, interacting with Pluto directly (dev branch)
 
 ## Requirements
-- Vim8/NeoVim
-- Deno
-- denops.vim
+- Vim 8 / NeoVim 0.5 or newer
+- [Deno](https://deno.land/)
+- [denops.vim](https://github.com/vim-denops/denops.vim)
 
 ## Installation
 1. Install Deno (see https://deno.land/#installation)
@@ -52,8 +52,8 @@ autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. B
 
 Edit a notebook (.jl file) in Vim while opening the notebook in Pluto web UI.
 
-## Functions
-### Insertion of a cell
+## Provided Functions
+### Insert a cell
 - pluto#insert_cell_above()
 - pluto#insert_cell_below()
 

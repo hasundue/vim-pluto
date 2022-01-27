@@ -27,6 +27,10 @@ export async function appendLines(denops: Denops, lnum: number, lines: string[])
     denops.call("append", lnum, lines);
 }
 
+export async function appendLine(denops: Denops, lnum: number, line: string): Promise<void> {
+    appendLines(denops, lnum, [line]);
+}
+
 export async function searchNext(denops: Denops, text: string): Promise<number> {
     const lnum: unknown = await denops.call("search", text, "n");
     ensureNumber(lnum);
@@ -37,4 +41,12 @@ export async function searchPrev(denops: Denops, text: string): Promise<number> 
     const lnum: unknown = await denops.call("search", text, "bn");
     ensureNumber(lnum);
     return lnum;
+}
+
+export async function moveCursor(denops: Denops, lnum: number, cnum: number): Promise<void> {
+    denops.call("cursor", lnum, cnum);
+}
+
+export async function startInsert(denops: Denops): Promise<void> {
+    denops.cmd("startinsert");
 }

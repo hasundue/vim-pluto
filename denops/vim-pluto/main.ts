@@ -7,6 +7,9 @@ import {
     searchPrev,
     searchNext,
     appendLines,
+    appendLine,
+    moveCursor,
+    startInsert,
 } from "./denops.ts";
 
 const CELL_HEAD = "# ╔═╡ ";
@@ -31,7 +34,7 @@ export async function main(denops: Denops): Promise<void> {
             : await searchNext(denops, CELL_HEAD);
 
         if ( headerLnum == 0 ) { // No cell found in the file
-            await appendLines(denops, lastLnum, [ ORDER_TITLE ]);
+            await appendLine(denops, lastLnum, ORDER_TITLE);
             newOrderLnum = lastLnum + 1;
             newLnum = direction < 0 ? cursorLnum - 1 : cursorLnum ;
         }
@@ -52,10 +55,10 @@ export async function main(denops: Denops): Promise<void> {
             newLnum = headerLnum - 1;
         }
 
-        await appendLines(denops, newOrderLnum, [ VISIBLE_HEAD + newCellID ]);
+        await appendLine(denops, newOrderLnum, VISIBLE_HEAD + newCellID);
         await appendLines(denops, newLnum, [ CELL_HEAD + newCellID, "", "" ])
-        await denops.call("cursor", newLnum + 2, 1);
-        await denops.cmd("startinsert");
+        await moveCursor(denops, newLnum + 2, 1);
+        await startInsert(denops);
     }
 
     denops.dispatcher = {

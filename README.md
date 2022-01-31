@@ -28,6 +28,13 @@ Example:
 ```viml
 nnoremap <silent> <LocalLeader>O :call pluto#insert_cell_above()<CR>
 nnoremap <silent> <LocalLeader>o :call pluto#insert_cell_below()<CR>
+
+nnoremap <silent> <LocalLeader>yy :call pluto#yank_cell()<CR>
+nnoremap <silent> <LocalLeader>dd :call pluto#delete_cell()<CR>
+
+nnoremap <silent> <LocalLeader>P :call pluto#paste_cell_above()<CR>
+nnoremap <silent> <LocalLeader>p :call pluto#paste_cell_below()<CR>
+
 nnoremap <silent> <LocalLeader>t :call pluto#toggle_code()<CR>
 ```
 
@@ -59,6 +66,17 @@ Edit a notebook (.jl file) in Vim while opening the notebook in Pluto web UI.
 - pluto#insert_cell_below()
 
 Insert an empty cell above/below the cell under the cursor and start editing it.
+
+### Yank/cut/paste a cell
+- pluto#yank_cell()
+- pluto#delete_cell()
+
+Yank/cut cell under the cursor and put it into the register reserved for the plugin.
+
+- pluto#paste_cell_above()
+- pluto#paste_cell_below()
+
+Paste a cell in the register above/below the cell under the cursor.
 
 ### Show/hide code
 - pluto#show_code()

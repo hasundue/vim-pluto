@@ -36,6 +36,13 @@ Example:
 >
     nnoremap <silent> <LocalLeader>O :call pluto#insert_cell_above()<CR>
     nnoremap <silent> <LocalLeader>o :call pluto#insert_cell_below()<CR>
+    
+    nnoremap <silent> <LocalLeader>yy :call pluto#yank_cell()<CR>
+    nnoremap <silent> <LocalLeader>dd :call pluto#delete_cell()<CR>
+    
+    nnoremap <silent> <LocalLeader>P :call pluto#paste_cell_above()<CR>
+    nnoremap <silent> <LocalLeader>p :call pluto#paste_cell_below()<CR>
+    
     nnoremap <silent> <LocalLeader>t :call pluto#toggle_code()<CR>
 <
 
@@ -53,6 +60,31 @@ pluto#insert_cell_above()
 					    *vim-pluto#insert_cell_below()*
 pluto#insert_cell_below()
 	Insert an empty cell below the cell under the cursor and start editing it.
+
+
+------------------------------------------------------------------------------
+					    *vim-pluto-functions-yank_cell*
+
+					    *vim-pluto#yank_cell()*
+pluto#yank_cell()
+	Yank a cell under the cursor into the register reserved for the plugin.
+
+					    *vim-pluto#delete_cell()*
+pluto#delete_cell()
+	Delete a cell under the cursor and put it into the register reserved
+	for the plugin.
+
+
+------------------------------------------------------------------------------
+					    *vim-pluto-functions-paste_cell*
+
+					    *vim-pluto#paste_cell_above()*
+pluto#paste_cell_above()
+	Paste a cell in the register above the cell under the cursor.
+
+					    *vim-pluto#paste_cell_below()*
+pluto#paste_cell_below()
+	Paste a cell in the register below the cell under the cursor.
 
 
 ------------------------------------------------------------------------------

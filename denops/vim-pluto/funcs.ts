@@ -1,6 +1,6 @@
-import { Denops } from "https://deno.land/x/denops_std@v2.4.0/mod.ts";
+import { Denops } from "https://deno.land/x/denops_std@v3.0.0/mod.ts";
 
-import * as vim from "https://deno.land/x/denops_std@v2.4.0/function/mod.ts";
+import * as vim from "https://deno.land/x/denops_std@v3.0.0/function/mod.ts";
 
 import { ensureNumber } from "https://deno.land/x/unknownutil@v1.1.4/mod.ts";
 import { v4 } from "https://deno.land/std@0.122.0/uuid/mod.ts";

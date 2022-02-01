@@ -14,9 +14,9 @@ import {
 
 export async function insertCell(
     denops: Denops, 
-    direction: number = +1,
-    startInsert: boolean = true,
-    cellId: string = crypto.randomUUID(),
+    direction = +1,
+    startInsert = true,
+    cellId = crypto.randomUUID(),
     cellLines: string[] = [],
 ): Promise<void> {
     const cursorPos = await vim.getcurpos(denops);
@@ -26,9 +26,9 @@ export async function insertCell(
     const orderTitleLnum = await vim.search(denops, ORDER_TITLE, "n");
     ensureNumber(orderTitleLnum);
 
-    var newOrderLnum: number;
-    var newLnum: number;
-    var newCellId: string;
+    let newOrderLnum: number;
+    let newLnum: number;
+    let newCellId: string;
 
     const headerLnum = direction < 0
         ? await vim.search(denops, CELL_HEAD, "cnb")
@@ -71,7 +71,7 @@ export async function insertCell(
 
     await vim.append(denops, newOrderLnum, SHOWN_HEAD + newCellId);
 
-    var newCellLines = [CELL_HEAD + newCellId].concat(cellLines);
+    let newCellLines = [CELL_HEAD + newCellId].concat(cellLines);
     if (startInsert) {
         newCellLines = newCellLines.concat(["", ""]);
     }
@@ -100,7 +100,7 @@ export async function setCodeVisibility(denops: Denops, mode: number): Promise<v
     const orderLine = await vim.getline(denops, orderLnum);
     const head = orderLine.substring(0, ORDER_HEAD.length);
 
-    var newHead: string;
+    let newHead: string;
 
     if ( mode > 0 ) { // Show the cell
         newHead = SHOWN_HEAD;
@@ -130,7 +130,7 @@ export async function yankCell(denops: Denops, del: boolean): Promise<void> {
     const nextHeaderLnum = await vim.search(denops, CELL_HEAD, "n");
     ensureNumber(nextHeaderLnum);
 
-    var cellLines = await vim.getline(denops, headerLnum, nextHeaderLnum-1);
+    const cellLines = await vim.getline(denops, headerLnum, nextHeaderLnum-1);
 
     const bufName = await vim.bufname(denops);
 
@@ -148,7 +148,7 @@ export async function yankCell(denops: Denops, del: boolean): Promise<void> {
     }
 }
 
-export async function pasteCell(denops: Denops, direction: number = +1): Promise<void> {
+export async function pasteCell(denops: Denops, direction = +1): Promise<void> {
     const regLines = await vim.getreg(denops, "vim-pluto", 1, true);
     ensureArray(regLines, isString);
 
